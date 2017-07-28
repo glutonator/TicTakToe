@@ -25,6 +25,7 @@ public class TicTakToe {
 		
 		System.out.println(plansza.toStringTable());
 		System.out.println("sdadasd");
+		//test
 	}
 
 }
