@@ -13,6 +13,7 @@ public class Board {
 	private int players_wins1=0, players_wins2=0 ;	
 	//true-player1, false-player2
 	private boolean whos_move =true;
+	private String moves ="";
 	
 
 	public Board() {
@@ -22,6 +23,8 @@ public class Board {
 		}
 		// this.last = 'O';
 	}
+	
+	
 	public void clear_Board() {
 		table=null;
 		table = new HashMap<Integer, Field>();
@@ -33,6 +36,7 @@ public class Board {
 		draw = false;
 		occupancy = 9;
 		whos_move=true;
+		moves="";
 	}
 
 	public Board(SortedMap<Integer, Field> table) {
@@ -67,6 +71,7 @@ public class Board {
 			if (this.table.get(i).getType() == '_') {
 				this.changeLast();
 				this.table.get(i).setType(this.last);
+				moves+=i;
 				this.win = win();
 				this.occupancy--;
 				this.draw = draw();
@@ -77,7 +82,9 @@ public class Board {
 					else {
 						players_wins2++;
 					}
+					
 				}
+				System.out.println(moves);
 			} else {
 				// nothing
 			}
@@ -211,4 +218,10 @@ public class Board {
 	public int getPlayers_wins2() {
 		return players_wins2;
 	}
+
+
+	public String getMoves() {
+		return moves;
+	}
+	
 }

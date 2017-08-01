@@ -4,14 +4,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
+
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+
 
 import logic.Board;
 
 public class Gui extends JFrame implements KeyListener, ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Board table = null;
 
 	private JLabel jlabel, jlabel2, jlabel3;
@@ -175,7 +180,7 @@ public class Gui extends JFrame implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ea) {
 		// TODO Auto-generated method stub
-		System.out.println(ea.getActionCommand());
+		//System.out.println(ea.getActionCommand());
 	}
 
 }

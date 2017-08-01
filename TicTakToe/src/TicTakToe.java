@@ -3,6 +3,8 @@ import javax.swing.SwingUtilities;
 
 import display.Window;
 import logic.*;
+import history.*;
+
 public class TicTakToe {
 
 	public static void main(String[] args) {
@@ -10,9 +12,11 @@ public class TicTakToe {
 		Board plansza = new Board();
 		//Window win=new Window(plansza);
 		//Window.start(plansza);
-		
-		new Window(plansza);
-		
+		File_operation fff= new File_operation(plansza);
+
+		new Window(plansza,fff);
+		//fff.trySave();
+		fff.read();
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override

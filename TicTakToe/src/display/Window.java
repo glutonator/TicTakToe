@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.GridLayout;
-import java.awt.Panel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,8 +21,9 @@ import logic.Board;
 import javax.swing.BoxLayout;
 import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
-import java.awt.Dimension;
+
 import java.awt.Font;
+import history.*;
 
 public class Window implements KeyListener, ActionListener {
 	// ActionListener
@@ -30,6 +31,8 @@ public class Window implements KeyListener, ActionListener {
 	private Board board = null;
 	private JLabel jlabel, jlabel2, jlabel3, jlabel4, jlabel5;
 	private HashMap<Integer, JButton> buttons =null;
+	private File_operation file_oper=null;
+	
 	
 	/**
 	 * Launch the application.
@@ -54,6 +57,10 @@ public class Window implements KeyListener, ActionListener {
 
 	public Window(Board board) {
 		initialize(board);
+	}
+	public Window(Board board,File_operation file_oper ) {
+		initialize(board);
+		this.file_oper=file_oper;
 	}
 
 	/**
@@ -219,7 +226,7 @@ public class Window implements KeyListener, ActionListener {
 			board.computerMove();
 			break;
 		}
-		display_info();
+		after_move();
 
 	}
 
@@ -238,8 +245,8 @@ public class Window implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 		if(board.isWin()==false&&board.isDraw()==false) {
 		board.setField(Integer.parseInt(ea.getActionCommand()));
-		System.out.println(ea.getActionCommand());
-		display_info();		
+		//System.out.println(ea.getActionCommand());
+		after_move();		
 		setButton(Integer.parseInt(ea.getActionCommand()));
 		//jlabel4.setText(ea.getActionCommand());
 		}
@@ -269,4 +276,11 @@ public class Window implements KeyListener, ActionListener {
 		}
 	}
 	
+	private void after_move() {
+		display_info();
+		save_history();
+	}
+	private void save_history() {
+		this.file_oper.trySave();
+	}
 }
