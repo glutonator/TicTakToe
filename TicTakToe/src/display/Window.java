@@ -1,6 +1,5 @@
 package display;
 
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -30,10 +29,9 @@ public class Window implements KeyListener, ActionListener {
 	private JFrame frame;
 	private Board board = null;
 	private JLabel jlabel, jlabel2, jlabel3, jlabel4, jlabel5;
-	private HashMap<Integer, JButton> buttons =null;
-	private File_operation file_oper=null;
-	
-	
+	private HashMap<Integer, JButton> buttons = null;
+	private File_operation file_oper = null;
+
 	/**
 	 * Launch the application.
 	 */
@@ -58,9 +56,10 @@ public class Window implements KeyListener, ActionListener {
 	public Window(Board board) {
 		initialize(board);
 	}
-	public Window(Board board,File_operation file_oper ) {
+
+	public Window(Board board, File_operation file_oper) {
 		initialize(board);
-		this.file_oper=file_oper;
+		this.file_oper = file_oper;
 	}
 
 	/**
@@ -77,34 +76,33 @@ public class Window implements KeyListener, ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(400, 400);
 
-		//main panel
+		// main panel
 		JPanel mainpanel = new JPanel();
 		frame.getContentPane().add(mainpanel);
 		mainpanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		mainpanel.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		//panel with score
+
+		// panel with score
 		JPanel scorepanel = new JPanel();
 		scorepanel.setLayout(new FlowLayout());
-		//FlowLayout flowLayout = (FlowLayout) scorepanel.getLayout();
+		// FlowLayout flowLayout = (FlowLayout) scorepanel.getLayout();
 		mainpanel.add(scorepanel);
-		
-		//panel with buttons
+
+		// panel with buttons
 		JPanel panel = new JPanel();
 		mainpanel.add(panel);
-		
-		//frame.setContentPane(panel);
+
+		// frame.setContentPane(panel);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		//panel with information
+		// panel with information
 		JPanel panel2 = new JPanel();
 		mainpanel.add(panel2);
-		
 
-		//buttons
+		// buttons
 		buttons = new HashMap<Integer, JButton>();
 		for (int i = 0; i < 9; i++) {
-			//JButton temp = new JButton("" + (i + 1));
+			// JButton temp = new JButton("" + (i + 1));
 			JButton temp = new JButton("_");
 			temp.setFocusable(false);
 			buttons.put(i + 1, temp);
@@ -132,12 +130,12 @@ public class Window implements KeyListener, ActionListener {
 			panels.get(2).add(buttons.get(i));
 		}
 
-		//informations
+		// informations
 		jlabel = new JLabel();
 		jlabel2 = new JLabel("Graj");
 		jlabel3 = new JLabel("F5 by zagraæ ponownie");
 		jlabel4 = new JLabel();
-		jlabel5 = new JLabel(board.getPlayers_wins1()+" : "+board.getPlayers_wins2());
+		jlabel5 = new JLabel(board.getPlayers_wins1() + " : " + board.getPlayers_wins2());
 		jlabel5.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
@@ -147,7 +145,6 @@ public class Window implements KeyListener, ActionListener {
 		panel2.add(jlabel4);
 		scorepanel.add(jlabel5);
 
-		
 		try {
 			jlabel.setText(board.toStringTable());
 		} catch (Exception e) {
@@ -214,16 +211,19 @@ public class Window implements KeyListener, ActionListener {
 		case KeyEvent.VK_NUMPAD9:
 			board.setField(9);
 			setButton(9);
-			
+
 			break;
 		case KeyEvent.VK_F5:
-			//setTablica(new Board());
+			// setTablica(new Board());
 			board.clear_Board();
 			clear_buttons();
 			break;
 		case KeyEvent.VK_F4:
 			// setTablica(new Board());
-			board.computerMove();
+			setButton(board.computerMove());		
+			break;
+		case KeyEvent.VK_F3:
+			setButton(board.smartMove());			
 			break;
 		}
 		after_move();
@@ -243,12 +243,12 @@ public class Window implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ea) {
 		// TODO Auto-generated method stub
-		if(board.isWin()==false&&board.isDraw()==false) {
-		board.setField(Integer.parseInt(ea.getActionCommand()));
-		//System.out.println(ea.getActionCommand());
-		after_move();		
-		setButton(Integer.parseInt(ea.getActionCommand()));
-		//jlabel4.setText(ea.getActionCommand());
+		if (board.isWin() == false && board.isDraw() == false) {
+			board.setField(Integer.parseInt(ea.getActionCommand()));
+			// System.out.println(ea.getActionCommand());
+			after_move();
+			setButton(Integer.parseInt(ea.getActionCommand()));
+			// jlabel4.setText(ea.getActionCommand());
 		}
 
 	}
@@ -262,24 +262,28 @@ public class Window implements KeyListener, ActionListener {
 		} else {
 			jlabel2.setText("Graj");
 		}
-		jlabel5.setText(board.getPlayers_wins1()+" : "+board.getPlayers_wins2());
+		jlabel5.setText(board.getPlayers_wins1() + " : " + board.getPlayers_wins2());
 	}
+
 	private void setButton(int i) {
-		this.buttons.get(i).setText(board.getTable().get(i).getType()+"");
+		if(i>0 &&i<=9) {
+		this.buttons.get(i).setText(board.getTable().get(i).getType() + "");
 		this.buttons.get(i).repaint();
-		
+		}
 	}
+
 	private void clear_buttons() {
-		for(Entry<Integer, JButton> i : buttons.entrySet()) {
+		for (Entry<Integer, JButton> i : buttons.entrySet()) {
 			i.getValue().setText("_");
 			i.getValue().repaint();
 		}
 	}
-	
+
 	private void after_move() {
 		display_info();
 		save_history();
 	}
+
 	private void save_history() {
 		this.file_oper.trySave();
 	}
